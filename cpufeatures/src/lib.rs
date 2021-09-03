@@ -60,6 +60,8 @@
     html_root_url = "https://docs.rs/cpufeatures/0.2.1"
 )]
 
+pub use sgx_trts;
+
 #[cfg(all(target_arch = "aarch64"))]
 #[doc(hidden)]
 pub mod aarch64;

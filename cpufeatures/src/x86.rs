@@ -32,16 +32,7 @@ macro_rules! __unless_target_features {
 #[doc(hidden)]
 macro_rules! __detect_target_features {
     ($($tf:tt),+) => {{
-        #[cfg(target_arch = "x86")]
-        use core::arch::x86::{__cpuid, __cpuid_count};
-        #[cfg(target_arch = "x86_64")]
-        use core::arch::x86_64::{__cpuid, __cpuid_count};
-
-        let cr = unsafe {
-            [__cpuid(1), __cpuid_count(7, 0)]
-        };
-
-        $($crate::check!(cr, $tf) & )+ true
+        $($crate::sgx_trts::is_x86_feature_detected!($tf) && )+ true
     }};
 }
 
