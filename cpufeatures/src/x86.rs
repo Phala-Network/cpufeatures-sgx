@@ -28,6 +28,25 @@ macro_rules! __unless_target_features {
 }
 
 // Use CPUID to detect the presence of all supplied target features.
+#[cfg(not(feature = "phala-sgx"))]
+#[macro_export]
+#[doc(hidden)]
+macro_rules! __detect_target_features {
+    ($($tf:tt),+) => {{
+        #[cfg(target_arch = "x86")]
+        use core::arch::x86::{__cpuid, __cpuid_count};
+        #[cfg(target_arch = "x86_64")]
+        use core::arch::x86_64::{__cpuid, __cpuid_count};
+
+        let cr = unsafe {
+            [__cpuid(1), __cpuid_count(7, 0)]
+        };
+
+        $($crate::check!(cr, $tf) & )+ true
+    }};
+}
+
+#[cfg(feature = "phala-sgx")]
 #[macro_export]
 #[doc(hidden)]
 macro_rules! __detect_target_features {

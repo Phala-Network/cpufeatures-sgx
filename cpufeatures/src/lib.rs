@@ -60,6 +60,7 @@
     html_root_url = "https://docs.rs/cpufeatures/0.2.1"
 )]
 
+#[cfg(feature = "phala-sgx")]
 pub use sgx_trts;
 
 #[cfg(all(target_arch = "aarch64"))]
